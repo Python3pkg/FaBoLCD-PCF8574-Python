@@ -247,11 +247,22 @@ class PCF8574:
         self.send(value, 0)
 
     ## write 
-    #  @param [in] str Output string data
-    def write(self, str):
-        
-        for chr in str:
-            self.send(ord(chr), RS)
+    #  @param [in] data string ,number, list Output data
+    def write(self, data):
+        if isinstance(data, (int, long, float)):
+            out_str = str(data)
+        else:
+            out_str = data
+
+        for chr in out_str:
+
+            if isinstance(chr, (int, long, float)):
+                out_chr = str(chr)
+            else:
+                out_chr = chr
+
+            for c in out_chr:
+                self.send(ord(c), RS)
 
         return 1  # assume sucess
 

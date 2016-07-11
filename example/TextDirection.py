@@ -10,10 +10,12 @@
 #
 #  FaBo <info@fabo.io>
 
-import PCF8574
+import FaBoLCD_PCF8574
 import time
 
-lcd = PCF8574.PCF8574()
+i = 0
+lcd = FaBoLCD_PCF8574.PCF8574()
+
 thisChar = ord('a')
 
 lcd.cursor()

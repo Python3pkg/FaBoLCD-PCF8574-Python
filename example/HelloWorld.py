@@ -20,7 +20,7 @@ lcd.write("Hello, World!")
 
 while True:
     lcd.setCursor(0,1)
-    lcd.write(str(i))
+    lcd.write(i)
 
     i += 1
     time.sleep(0.5)
