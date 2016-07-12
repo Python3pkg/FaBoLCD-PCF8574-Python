@@ -12,15 +12,21 @@
 
 import FaBoLCD_PCF8574
 import time
+import sys
 
 i = 0
 lcd = FaBoLCD_PCF8574.PCF8574()
 
 lcd.write("Hello, World!")
 
-while True:
-    lcd.setCursor(0,1)
-    lcd.write(i)
+try:
+    while True:
+        lcd.setCursor(0,1)
+        lcd.write(i)
 
-    i += 1
-    time.sleep(0.5)
+        i += 1
+
+        time.sleep(0.5)
+
+except KeyboardInterrupt:
+    sys.exit()

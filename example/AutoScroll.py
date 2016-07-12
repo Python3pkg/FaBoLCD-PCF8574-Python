@@ -12,15 +12,20 @@
 
 import FaBoLCD_PCF8574
 import time
+import sys
 
 lcd = FaBoLCD_PCF8574.PCF8574()
 
-lcd.write("FaBoLCD Scroll Test")
+lcd.write("FaBoLCD Scroll TEST!")
 lcd.autoscroll()
 
-while True:
+try:
+    while True:
 
-    lcd.setCursor(8,1)
-    lcd.write('*')
+        lcd.setCursor(8,1)
+        lcd.write('*')
 
-    time.sleep(0.8)
+        time.sleep(0.8)
+
+except KeyboardInterrupt:
+    sys.exit()

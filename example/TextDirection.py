@@ -12,6 +12,7 @@
 
 import FaBoLCD_PCF8574
 import time
+import sys
 
 i = 0
 lcd = FaBoLCD_PCF8574.PCF8574()
@@ -20,20 +21,24 @@ thisChar = ord('a')
 
 lcd.cursor()
 
-while True:
-    char = chr(thisChar)
-    if char == 'j':
-        lcd.rightToLeft()
+try:
+    while True:
+        char = chr(thisChar)
+        if char == 'j':
+            lcd.rightToLeft()
 
-    if char == 's':
-        lcd.leftToRight()
+        if char == 's':
+            lcd.leftToRight()
 
-    if thisChar > ord('z'):
-        lcd.home()
-        char = 'a'
-        thisChar = ord(char)
+        if thisChar > ord('z'):
+            lcd.home()
+            char = 'a'
+            thisChar = ord(char)
 
-    lcd.write(char)
+        lcd.write(char)
 
-    time.sleep(0.5)
-    thisChar += 1
+        time.sleep(0.5)
+        thisChar += 1
+
+except KeyboardInterrupt:
+    sys.exit()

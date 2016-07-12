@@ -12,6 +12,7 @@
 
 import FaBoLCD_PCF8574
 import time
+import sys
 
 heart=[
     0b00000,
@@ -49,27 +50,27 @@ armsDown = [
     0b00100,
     0b01010,
     0b00100,
-    0b00100,
     0b01110,
     0b10101,
     0b00100,
     0b01010,
+    0b10001
 ]
 
 armsUp = [
     0b00100,
     0b01010,
-    0b00100,
     0b10101,
     0b01110,
     0b00100,
     0b00100,
-    0b01010
+    0b01010,
+    0b10001
 ]
 
 lcd = FaBoLCD_PCF8574.PCF8574()
 
-lcd.write("Custum Character")
+lcd.write("Cusoum Character")
 
 lcd.createChar(0, heart)
 lcd.createChar(1, smiley)
@@ -78,12 +79,19 @@ lcd.createChar(3, armsDown)
 lcd.createChar(4, armsUp)
 
 i = 0
-while True:
 
-    lcd.setCursor(7,1)
-    lcd.writeCreateChar(0)
-    lcd.writeCreateChar(1+i)
-    lcd.writeCreateChar(3+i)
+try:
+    while True:
 
-    i = 1 - i
-    time.sleep(1)
+        lcd.setCursor(5,1)
+        lcd.writeCreateChar(0)
+        lcd.write(" ")
+        lcd.writeCreateChar(1+i)
+        lcd.write(" ")
+        lcd.writeCreateChar(3+i)
+
+        i = 1 - i
+        time.sleep(1)
+
+except KeyboardInterrupt:
+    sys.exit()

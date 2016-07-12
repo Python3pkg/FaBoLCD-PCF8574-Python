@@ -49,8 +49,10 @@ LCD_MOVELEFT    = 0x00
 # flags for function set
 LCD_8BITMODE    = 0x10
 LCD_4BITMODE    = 0x00
+
 LCD_2LINE       = 0x08
 LCD_1LINE       = 0x00
+
 LCD_5x10DOTS    = 0x04
 LCD_5x8DOTS     = 0x00
 
@@ -64,7 +66,7 @@ DB5 = 0b00100000 # P5 : DB5 bit
 DB6 = 0b01000000 # P6 : DB6 bit
 DB7 = 0b10000000 # P7 : DB7 bit
 
-
+## smbus
 bus = smbus.SMBus(1)
 
 ## FaBoLCDmini_AQM0802A LCD I2C Controll class
@@ -90,13 +92,17 @@ class PCF8574:
 # LiquidCrystal constructor is called).
 
     ## Constructor
-    def __init__(self):
-        self.address   = SLAVE_ADDRESS
+    #  @param [in] address PCF8574 I2C slave address default:0x20
+    def __init__(self, address=SLAVE_ADDRESS):
+        self.address   = address
         self.backlight = BL
         self.displayfunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS
         self.begin()
 
-    ## brgin
+    ## begin
+    #  @param [in] cols    LCD col     Default:16
+    #  @param [in] lines   LCD lines   Default:2
+    #  @param [in] dotsize LCD Dotsize Default:0x10(8dots)
     def begin(self, cols=16, lines=2, dotsize=LCD_5x8DOTS):
         if lines > 1:
             self.displayfunction |= LCD_2LINE
@@ -149,17 +155,21 @@ class PCF8574:
         self.command(LCD_ENTRYMODESET | self.displaymode)
 
     ## setRowOffsets
+    #  @param [in] row0
+    #  @param [in] row1
+    #  @param [in] row2
+    #  @param [in] row3
     def setRowOffsets(self, row0, row1, row2, row3):
         self.row_offsets = [row0, row1, row2, row3]
 
 # high level commands, for the user!
 
-    ## clear
+    ## Display clear
     def clear(self):
         self.command(LCD_CLEARDISPLAY)  # clear display, set cursor position to zero
         time.sleep(0.002)    #this command takes a long time!
 
-    ## home
+    ## move home point
     def home(self):
         self.command(LCD_RETURNHOME)  # set cursor position to zero
         time.sleep(0.002)    #this command takes a long time!
@@ -246,7 +256,7 @@ class PCF8574:
     def command(self, value):
         self.send(value, 0)
 
-    ## write 
+    ## write
     #  @param [in] data string ,number, list Output data
     def write(self, data):
         if isinstance(data, (int, long, float)):
@@ -269,7 +279,7 @@ class PCF8574:
     ## writeInt
     #  @param [in]  Output int
     def writeCreateChar(self, int):
-        
+
         self.send(int, RS)
 
         return 1  # assume sucess
@@ -277,6 +287,8 @@ class PCF8574:
 # low level data pushing commands
 
     ## write either command or data, 4-bit
+    #  @param [in] value write value
+    #  @param [in] mode  write mode
     def send(self, value, mode):
         Hbit = value & 0xF0
         Lbit = (value << 4) & 0xF0
@@ -284,6 +296,7 @@ class PCF8574:
         self.write4bits(Lbit|mode)
 
     ## pulseEnable
+    #  @param [in] value write value
     def pulseEnable(self, value):
         self.writeI2c(value & ~EN)  # EN LOW
         time.sleep(0.000000045)     # enable pulse must be >450ns
@@ -292,22 +305,13 @@ class PCF8574:
         self.writeI2c(value & ~EN)  # EN LOW
         time.sleep(0.0000100)       # commands need > 37us to settle
 
-    # write4bits
+    ## write4bits
+    #  @param [in] value write value
     def write4bits(self, value):
         self.writeI2c(value)
         self.pulseEnable(value)
 
     ## writeI2c
+    #  @param [in] data write data
     def writeI2c(self, data):
         bus.write_byte(self.address, data | self.backlight)
-
-if __name__ == "__main__":
-    i = 0
-    pcf8574 = PCF8574()
-
-    pcf8574.write("FaBo Test")
-    while True:
-        pcf8574.setCursor(0,1)
-        pcf8574.write(str(i))
-        i += 1
-        time.sleep(1)

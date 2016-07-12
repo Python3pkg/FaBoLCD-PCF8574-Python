@@ -12,6 +12,7 @@
 
 import FaBoLCD_PCF8574
 import time
+import sys
 
 lcd = FaBoLCD_PCF8574.PCF8574()
 
@@ -19,15 +20,19 @@ lcd.write("Blink Test")
 
 i=0
 
-while True:
+try:
+    while True:
 
-    lcd.noDisplay()
+        lcd.noDisplay()
 
-    lcd.setCursor(0, 1)
-    lcd.write(str(i))
-    time.sleep(1)
+        lcd.setCursor(0, 1)
+        lcd.write(str(i))
+        time.sleep(1)
 
-    lcd.display()
+        lcd.display()
 
-    time.sleep(1)
-    i += 1
+        time.sleep(1)
+        i += 1
+
+except KeyboardInterrupt:
+    sys.exit()
