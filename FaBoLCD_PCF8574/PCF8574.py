@@ -1,6 +1,6 @@
 # coding: utf-8
-## @package FaBoLCD_PCF8574
-#  This is a library for the FaBo LCD I2C Brick.
+## @package PCF8574
+#  This is a FaBoLCD_PCF8574 library for the FaBo LCD I2C Brick.
 #
 #  http://fabo.io/212.html
 #
@@ -57,14 +57,24 @@ LCD_5x10DOTS    = 0x04
 LCD_5x8DOTS     = 0x00
 
 # pin/port bit
-RS  = 0b00000001 # P0 : RS bit
-RW  = 0b00000010 # P1 : R/W bit
-EN  = 0b00000100 # P2 : Enable bit
-BL  = 0b00001000 # P3 : BACKLIGHT bit
-DB4 = 0b00010000 # P4 : DB4 bit
-DB5 = 0b00100000 # P5 : DB5 bit
-DB6 = 0b01000000 # P6 : DB6 bit
-DB7 = 0b10000000 # P7 : DB7 bit
+
+## P0 : RS bit  0b00000001
+RS  = 0x01
+## P1 : R/W bit 0b00000010
+RW  = 0x02
+## P2 : Enable bit 0b00000100
+EN  = 0x04
+## P3 : BACKLIGHT bit 0b00001000
+BL  = 0x08
+
+## P4 : DB4 bit 0b00010000
+DB4 = 0x10
+## P5 : DB5 bit 0b00100000
+DB5 = 0x20
+## P6 : DB6 bit 0b01000000
+DB6 = 0x40
+## P7 : DB7 bit 0b10000000
+DB7 = 0x80
 
 ## smbus
 bus = smbus.SMBus(1)
