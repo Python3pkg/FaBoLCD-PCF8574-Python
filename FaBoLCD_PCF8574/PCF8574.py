@@ -269,14 +269,14 @@ class PCF8574:
     ## write
     #  @param [in] data string ,number, list Output data
     def write(self, data):
-        if isinstance(data, (int, long, float)):
+        if isinstance(data, (int, float)):
             out_str = str(data)
         else:
             out_str = data
 
         for chr in out_str:
 
-            if isinstance(chr, (int, long, float)):
+            if isinstance(chr, (int, float)):
                 out_chr = str(chr)
             else:
                 out_chr = chr
